@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // console.log(models);
       this.hasMany(models.Responses)
     }
-  };
+  }
   Requests.init({
     url: DataTypes.STRING,
     id: { 

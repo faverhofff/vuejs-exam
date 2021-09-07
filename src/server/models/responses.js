@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       //   as: 'requestId'
       // })
     }
-  };
+  }
   Responses.init({
     data: DataTypes.JSON,
     id: { 

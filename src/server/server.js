@@ -19,15 +19,15 @@ const sequelize = new Sequelize('vue-test', 'root', '', {
     dialect: 'mysql'
 });
 
-var csrfProtection = csrf({ cookie: true })
+const csrfProtection = csrf({ cookie: true })
 
-var limiter = new RateLimit({
+const limiter = new RateLimit({
     windowMs: 1*60*1000, // 10 minutes 
     max: 100, // limit each IP to 100 requests per windowMs 
     delayMs: 0 
 })
 
-let app = express()
+const app = express()
 app.use(cors())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
@@ -41,7 +41,7 @@ app.get('/getcsrftoken', csrfProtection, function (req, res) {
 
 // csrfProtection
 app.post('/api/http/:method', async function (req, res) {  
-    let allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
         return res.json(apiResponse(null, 'Unknow http method', 400));
