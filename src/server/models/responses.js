@@ -10,11 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Requests)
-      // this.belongsTo(models.Requests, {
-      //   foreignKey: 'requestId',
-      //   as: 'requestId'
-      // })
+      this.belongsTo(models.Requests)    
     }
   }
   Responses.init({
@@ -23,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true
     },
-    requestId: DataTypes.UUID
+    requestId: DataTypes.UUID,
+    order: { type: DataTypes.INTEGER }
   }, {
     sequelize,
     modelName: 'Responses',

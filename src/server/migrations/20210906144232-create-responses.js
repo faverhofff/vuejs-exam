@@ -7,6 +7,10 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
+      order: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       data: {
         type: Sequelize.JSON
       },

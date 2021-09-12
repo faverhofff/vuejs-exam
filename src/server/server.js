@@ -9,10 +9,6 @@ const { v4: uuid, v4 } = require('uuid');
 const { Sequelize } = require('sequelize');
 const { Requests, Responses } = require('./models');
 const Q = require('q');
-const { request } = require('express')
-
-// const Requests = require('./models').Requests;
-// const Responses = require('./models').Responses;
 
 const sequelize = new Sequelize('vue-test', 'root', '', {
     host: 'localhost',
@@ -39,21 +35,19 @@ app.get('/getcsrftoken', csrfProtection, function (req, res) {
     return res.json(apiResponse(req.csrfToken(), null, 200))
 });
 
-// csrfProtection
 app.post('/api/http/:method', csrfProtection, async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
         return res.json(apiResponse(null, 'Unknow http method', 400));
 
-    // axios.interceptors.request.use( (request, response) => {
-    //     // perform a task before the request is sent        
-    //     return request;
-    // });
-    
     const urlParts = new URL(req.body.url);
+        
     try { 
-        const requestResponse = await axios[method.toLowerCase()](req.body.url, { validateStatus: false });
+        const requestResponse = await axios[method.toLowerCase()](req.body.url, { validateStatus: false })
+            .catch(onRequestError);
+
+        const isRedirect = requestResponse.request._redirectable._isRedirect;
         const response = { 
             location: urlParts.pathname, 
             server: '',
@@ -61,43 +55,60 @@ app.post('/api/http/:method', csrfProtection, async function (req, res) {
             http: 'HTTP '+requestResponse.request.res.httpVersion,                 
         };
 
-        const id = save(req.body.url, response);
+        const reqId = saveRequest(req.body.url);
+        if(isRedirect)
+            saveResponse(reqId, 1, {
+                location: urlParts.pathname, 
+                server: '',
+                statusCode: 302, 
+                http: 'HTTP '+ arguments[1].req.httpVersion,
+            })
+        
+        saveResponse(reqId, (isRedirect ? 2 : 1), {
+            location: isRedirect ? new URL(requestResponse.request._redirectable._currentUrl).pathname : urlParts.pathname, 
+            server: '',
+            statusCode: res.statusCode, 
+            http: 'HTTP '+ arguments[1].req.httpVersion,
+        })
 
         res.json(apiResponse({ 
             url: getUrlInfo(req.body.url), 
             request: {
-                id: id
+                id: reqId
             },
             response: response
         }, null, 200));
     }
     catch(err) {
-        
-        requestResponse = err.response;
-        //console.log(arguments[1]);
-        //console.log(arguments[1].req.httpVersion);
-        const response = {
-            location: urlParts.pathname, 
-            server: '',
-            statusCode: 400, 
-            http: 'HTTP '+ arguments[1].req.httpVersion,    
-        }
-
-        save(req.body.url, response);
-       
-        res.json(apiResponse({ 
-            url: getUrlInfo(req.body.url), 
-            request: {},
-            response: response
-        }, err.code, 200));
-
-        // res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
+        console.log(err);
+        res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
     }    
 });
 
+var onRequestError = function(err) {     
+    const urlParts = new URL(err.config.url);
+    requestResponse = err.response;        
+    const response = {
+        location: urlParts.pathname, 
+        server: '',
+        statusCode: 400, 
+        http: null 
+    }
+
+    const reqId = saveRequest(req.body.url);
+    saveResponse(reqId, 1, response);
+    
+    res.json(apiResponse({ 
+        url: getUrlInfo(req.body.url), 
+        request: {
+            id: reqId
+        },
+        response: response
+    }, null, 200));
+}
+
 // to see request-response details.
 app.get('/:id', csrfProtection, async (req, res) => {
-    // cambiar esto.
     const id = req.params.id;
     Q.all([
         Requests.findByPk(id),
@@ -113,27 +124,6 @@ app.get('/:id', csrfProtection, async (req, res) => {
     .done();    
 });
 
-var save = function(req, res) { 
-    const requestId = v4()
-    req.id = requestId; 
-    const requestRecord = Requests.build({ id: requestId, url: req });
-    const responseRecord = Responses.build({ id: v4(), requestId: requestId, data: res });
-
-    requestRecord.save();    
-    responseRecord.save();
-
-    return requestId;
-}
-
-var getUrlInfo = function(url) { 
-    const urlParts = new URL(url);
-    return {
-        domain: urlParts.hostname,
-        scheme: urlParts.protocol.substr(0,4),
-        path: urlParts.pathname
-    };
-}
-
 app.use((error, req, res, next) => {    
     if(error.code != '') { 
         if (error.code === 'EBADCSRFTOKEN') {
@@ -145,5 +135,28 @@ app.use((error, req, res, next) => {
     return next(error);
 });
 
-// Run the server
+var saveRequest = function (req) {
+    const requestId = v4()
+    req.id = requestId; 
+    const requestRecord = Requests.build({ id: requestId, url: req });
+    
+    requestRecord.save();
+    return requestId;  
+}
+
+var saveResponse = function (reqId, order, res) {
+    const responseRecord = Responses.build({ id: v4(), requestId: reqId, data: res, order: order });
+    responseRecord.save();
+}
+
+var getUrlInfo = function(url) { 
+    const urlParts = new URL(url);
+    return {
+        domain: urlParts.hostname,
+        scheme: urlParts.protocol.substr(0,4),
+        path: urlParts.pathname
+    };
+}
+
+// Run the server.
 app.listen(5000, () => console.log(`Server running in 5000`));
