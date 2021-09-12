@@ -1,0 +1,63 @@
+.chart-skills {
+    position: relative;
+    width: 350px;
+    height: 175px;
+  }
+
+  .chart-skills::before,
+.chart-skills::after {
+  position: absolute;
+}
+ 
+.chart-skills::before {
+  content: '';
+  width: inherit;
+  height: inherit;
+  border: 45px solid rgba(211,211,211,.3);
+  border-bottom: none;
+  border-top-left-radius: 175px;
+  border-top-right-radius: 175px;
+}
+ 
+.chart-skills::after {
+  content: 'Top Skills';
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: cadetblue;
+}
+
+.chart-skills li {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    border: 45px solid;
+    border-top: none;
+    border-bottom-left-radius: 175px;
+    border-bottom-right-radius: 175px;
+    transform-origin: 50% 0;
+  }
+   
+  .chart-skills li:nth-child(1) {
+    z-index: 4;
+    border-color: green;
+  }
+   
+  .chart-skills li:nth-child(2) {
+    z-index: 3;
+    border-color: firebrick;
+  }
+   
+  .chart-skills li:nth-child(3) {
+    z-index: 2;
+    border-color: steelblue;
+  }
+   
+  .chart-skills li:nth-child(4) {
+    z-index: 1;
+    border-color: orange;
+  }
