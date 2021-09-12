@@ -85,26 +85,31 @@ app.post('/api/http/:method', csrfProtection, async function (req, res) {
     }    
 });
 
-var onRequestError = function(err) {     
-    const urlParts = new URL(err.config.url);
-    requestResponse = err.response;        
-    const response = {
-        location: urlParts.pathname, 
-        server: '',
-        statusCode: 400, 
-        http: null 
-    }
+var onRequestError = function(err) {   
+    if(err.response) {
+        const urlParts = new URL(err.config.url);
+        requestResponse = err.response;        
+        const response = {
+            location: urlParts.pathname, 
+            server: '',
+            statusCode: 400, 
+            http: null 
+        }
 
-    const reqId = saveRequest(req.body.url);
-    saveResponse(reqId, 1, response);
-    
-    res.json(apiResponse({ 
-        url: getUrlInfo(req.body.url), 
-        request: {
-            id: reqId
-        },
-        response: response
-    }, null, 200));
+        const reqId = saveRequest(req.body.url);
+        saveResponse(reqId, 1, response);
+        
+        res.json(apiResponse({ 
+            url: getUrlInfo(req.body.url), 
+            request: {
+                id: reqId
+            },
+            response: response
+        }, null, 200));
+    }
+    else { 
+        res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
+    }
 }
 
 // to see request-response details.
