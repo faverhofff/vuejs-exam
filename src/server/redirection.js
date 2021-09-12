@@ -2,10 +2,11 @@ const express = require('express')
 const app = express()
 
 // for test
-app.get('/redirect', (req, res) => {
+app.get('/', (req, res) => {
     //res.redirect(301, 'http://localhost:5000/hello')
-    response.set('location', '/hello');
-    response.status(301).send()
+    //response.set('location', '/hello');
+    //response.status(301).send()
+    res.redirect('/hello');  
 });
 
 // for test
@@ -14,4 +15,4 @@ app.get('/hello', (req, res) => {
 });
 
 // Run the server
-app.listen(6000, () => console.log(`Server running in 6000`));
+app.listen(5001, () => console.log(`Server running in 5001`));

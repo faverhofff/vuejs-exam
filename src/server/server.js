@@ -33,14 +33,14 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
-// app.use(csrfProtection)
+app.use(csrfProtection)
 
 app.get('/getcsrftoken', csrfProtection, function (req, res) {
-    return res.json(success('', req.csrfToken(), 200))
+    return res.json(apiResponse(req.csrfToken(), null, 200))
 });
 
 // csrfProtection
-app.post('/api/http/:method', async function (req, res) {  
+app.post('/api/http/:method', csrfProtection, async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
@@ -61,11 +61,13 @@ app.post('/api/http/:method', async function (req, res) {
             http: 'HTTP '+requestResponse.request.res.httpVersion,                 
         };
 
-        save(req.body.url, response);
+        const id = save(req.body.url, response);
 
         res.json(apiResponse({ 
             url: getUrlInfo(req.body.url), 
-            request: {},
+            request: {
+                id: id
+            },
             response: response
         }, null, 200));
     }
@@ -94,7 +96,7 @@ app.post('/api/http/:method', async function (req, res) {
 });
 
 // to see request-response details.
-app.get('/:id', async (req, res) => {
+app.get('/:id', csrfProtection, async (req, res) => {
     // cambiar esto.
     const id = req.params.id;
     Q.all([
@@ -119,6 +121,8 @@ var save = function(req, res) {
 
     requestRecord.save();    
     responseRecord.save();
+
+    return requestId;
 }
 
 var getUrlInfo = function(url) { 
@@ -130,25 +134,16 @@ var getUrlInfo = function(url) {
     };
 }
 
-// app.use((error, req, res, next) => {    
-//     // if (error.code === 'EBADCSRFTOKEN') {
-//     //   console.log(error);
-//     //   console.log(req.get("csrf-token")); // <- displays the token perfectly 
-//     //   return res.status(403).send();
-//     // } 
-//     return next(error);
-//   });
+app.use((error, req, res, next) => {    
+    if(error.code != '') { 
+        if (error.code === 'EBADCSRFTOKEN') {
+            return res.json(apiResponse(null, 'Missing CSRF-TOKEN', 403));
+        } else { 
+            return res.json(apiResponse(null, 'An general error ocurred, contact with administrators', 500));
+        }
+    }
+    return next(error);
+});
 
 // Run the server
 app.listen(5000, () => console.log(`Server running in 5000`));
-
-
-
-// in client side
-// axios.get('/api/getcsrftoken').then((response) => {
-//     axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrfToken
-//   }, (err) => {
-//     console.log(err)
-//   })
-
-
