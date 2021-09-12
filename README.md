@@ -2,31 +2,23 @@
 
 ## Project setup
 ```
-npm install
-npm install -g sequelize-cli
+yarn install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm build
+yarn build
+```
+
+### Lints and fixes files
+```
+yarn lint
 ```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Server
-Inside src/server folder, run...
-
-```
-sequelize db:migrate
-```
-
-### Run server
-```
-node src/server.js
-```
