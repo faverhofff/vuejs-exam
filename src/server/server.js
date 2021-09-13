@@ -31,7 +31,7 @@ app.use(limiter)
 app.use(cookieParser())
 app.use(csrfProtection)
 
-app.get('/getcsrftoken', csrfProtection, function (req, res) {
+app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     return res.json(apiResponse(req.csrfToken(), null, 200))
 });
 
