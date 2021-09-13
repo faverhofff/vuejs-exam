@@ -10,5 +10,7 @@ const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
 if (token == undefined ) {
     requestService
         .getToken()
-        .then(token => axios.defaults.headers.common['X-CSRF-TOKEN'] = token.data );
+        .then(token => {             
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = token.data.data; 
+        } );
 }
