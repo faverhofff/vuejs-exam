@@ -113,7 +113,7 @@ var onRequestError = function(err) {
 }
 
 // to see request-response details.
-app.get('/:id', csrfProtection, async (req, res) => {
+app.get('/api/:id', csrfProtection, async (req, res) => {
     const id = req.params.id;
     Q.all([
         Requests.findByPk(id),
