@@ -17,7 +17,7 @@ export default class RequestService {
    * 
    * @returns 
    */
-  public getToken(): Promise<string> {
+  public getToken(): Promise<any> {
     return axios.get(`${ApiBaseUrl}/getcsrftoken`);
   }  
 
