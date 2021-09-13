@@ -16,17 +16,22 @@ import { RequestResult } from '../../model/request-result.model';
 export default class RequestCodeComponent extends Vue {
   @Prop() public RequestInfo!: RequestResult; 
 
-  @Watch('RequestInfo')
+  @Watch('prop')
   onPropertyChanged(value: RequestResult) {
     console.log(value);
     this.RequestInfo = value
+  }
+
+  data(){
+    return {
+      prop: this.RequestInfo
+    }
   }
 
   public readonly MessagebyStatusCode = {
       '200': 'Everything is fine!', 
       '404': 'Error loading'
   }
-
 }
 </script>
 
