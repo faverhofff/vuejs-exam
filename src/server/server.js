@@ -9,6 +9,7 @@ const { v4: uuid, v4 } = require('uuid');
 const { Sequelize } = require('sequelize');
 const { Requests, Responses } = require('./models');
 const Q = require('q');
+const helmet = require("helmet");
 
 const sequelize = new Sequelize('vue-test', 'root', '', {
     host: 'localhost',
@@ -30,12 +31,20 @@ app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
 app.use(csrfProtection)
+app.use(helmet.hidePoweredBy());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.ieNoOpen())
+app.use(helmet.xssFilter());
 
 app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
-    return res.json(apiResponse(req.csrfToken(), null, 200))
+    const token = req.csrfToken()
+    res.cookie('csrf-token', token)
+    // res.cookie('XSRF-TOKEN', token)
+    return res.json(apiResponse(token, null, 200))
 });
 
-app.post('/api/http/:method', csrfProtection, async function (req, res) {  
+// csrfProtection
+app.post('/api/http/:method', async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)

@@ -12,5 +12,18 @@ if (token == undefined ) {
         .getToken()
         .then(token => {             
             axios.defaults.headers.common['X-CSRF-TOKEN'] = token.data.data; 
+
+            console.log(token.data.data);
+            // fetch('http://localhost:5000/api/http/GET', {
+            //     credentials: 'same-origin', // <-- includes cookies in the request
+            //     headers: {
+            //       'CSRF-Token': token.data.data // <-- is the csrf token as a header
+            //     },
+            //     method: 'POST',
+            //     // body: {
+                 
+            //     // }
+            //   })
+
         } );
 }
