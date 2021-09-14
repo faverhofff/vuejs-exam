@@ -5,13 +5,13 @@ const RateLimit = require('express-rate-limit')
 const cookieParser = require('cookie-parser')
 const { apiResponse } = require("./apiResponse")
 const axios = require('axios')
-const { v4: uuid, v4 } = require('uuid');
+const { v4 } = require('uuid');
 const { Sequelize } = require('sequelize');
 const { Requests, Responses } = require('./models');
 const Q = require('q');
 const helmet = require("helmet");
 
-const sequelize = new Sequelize('vue-test', 'root', '', {
+new Sequelize('vue-test', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });
@@ -30,7 +30,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
-app.use(csrfProtection)
+// app.use(csrfProtection)
 app.use(helmet.hidePoweredBy());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
@@ -53,39 +53,41 @@ app.post('/api/http/:method', async function (req, res) {
     const urlParts = new URL(req.body.url);
         
     try { 
-        const requestResponse = await axios[method.toLowerCase()](req.body.url, { validateStatus: false })
-            .catch(onRequestError);
-
-        const isRedirect = requestResponse.request._redirectable._isRedirect;
-        const response = { 
-            location: urlParts.pathname, 
-            server: '',
-            statusCode: requestResponse.status, 
-            http: 'HTTP '+requestResponse.request.res.httpVersion,                 
-        };
+        const requestResponse = await axios[method.toLowerCase()](req.body.url).catch( error => console.log(error));
+            
+        const isRedirect = requestResponse!=null && requestResponse.request != null && requestResponse.request._redirectable._isRedirect;      
+        let responses = [];
 
         const reqId = saveRequest(req.body.url);
-        if(isRedirect)
-            saveResponse(reqId, 1, {
+        if(isRedirect) { 
+            const redirectResponse = {
                 location: urlParts.pathname, 
                 server: '',
+                date: null,
                 statusCode: 302, 
-                http: 'HTTP '+ arguments[1].req.httpVersion,
-            })
+                http: 'HTTP ' + requestResponse.request.res.httpVersion // arguments[1].req.httpVersion,
+            };
+            responses.push(redirectResponse)
+            saveResponse(reqId, 1, redirectResponse)
+        }
         
-        saveResponse(reqId, (isRedirect ? 2 : 1), {
+        let finalResponse = {
             location: isRedirect ? new URL(requestResponse.request._redirectable._currentUrl).pathname : urlParts.pathname, 
             server: '',
-            statusCode: res.statusCode, 
+            date: new Date(),                    
+            statusCode: requestResponse != null ? requestResponse.status : 400, //res.statusCode, 
             http: 'HTTP '+ arguments[1].req.httpVersion,
-        })
+        }
+
+        saveResponse(reqId, (isRedirect ? 2 : 1), finalResponse)
+        responses.push(finalResponse)
 
         res.json(apiResponse({ 
             url: getUrlInfo(req.body.url), 
             request: {
                 id: reqId
             },
-            response: response
+            response: responses
         }, null, 200));
     }
     catch(err) {
@@ -93,33 +95,6 @@ app.post('/api/http/:method', async function (req, res) {
         res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
     }    
 });
-
-var onRequestError = function(err) {   
-    if(err.response) {
-        const urlParts = new URL(err.config.url);
-        requestResponse = err.response;        
-        const response = {
-            location: urlParts.pathname, 
-            server: '',
-            statusCode: 400, 
-            http: null 
-        }
-
-        const reqId = saveRequest(req.body.url);
-        saveResponse(reqId, 1, response);
-        
-        res.json(apiResponse({ 
-            url: getUrlInfo(req.body.url), 
-            request: {
-                id: reqId
-            },
-            response: response
-        }, null, 200));
-    }
-    else { 
-        res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
-    }
-}
 
 // to see request-response details.
 app.get('/api/:id', csrfProtection, async (req, res) => {
@@ -132,7 +107,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
             url: getUrlInfo(requestObj.url), 
             request: {},
             response: responsesObj, 
-            url: requestObj.url 
+            // url: requestObj.url 
         }, null, 200));
     })
     .done();    
