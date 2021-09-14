@@ -1,15 +1,25 @@
-import axios from 'axios';
+import axiosInstance from "@/core/services/axios.service"
+import { requestService } from "@/core/services/request.service";
+import { ApiRoutes } from "@/router/api-routes";
 
 export const refreshHeaderTokenInterceptor = () => {
-  axios.interceptors.response.use(
+  axiosInstance.interceptors.response.use(
     async (config: any) => {
-      // const token = axios.defaults.headers.common['X-CSRF-TOKEN'];
-      // if (token == undefined ) {
-      //   await requestService.getToken()
-        // .then(token => {
-        //   axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-        // })
-      // }
+      const originalConfig = config;
+      if (originalConfig.config.url !== requestService.apiGetToken && config.data) {
+        if (config.data.status == '403') {
+
+          try {
+            const accessToken = await requestService.getToken();
+            axiosInstance.defaults.headers.common['X-CSRF-TOKEN'] = accessToken.data.data;
+
+            return axiosInstance.request(originalConfig.config)
+          } catch (_error) {
+            return config;
+          }
+        }
+      }
+
 
       return config;
     },

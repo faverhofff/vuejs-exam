@@ -1,9 +1,24 @@
 export interface RequestResult {
-  code: number;
-  url: string;
-  response: Response;
-  shareUrl: string;
-  timingAnalysis: object;
+  data: {data: Header};
+}
+
+export interface Header {
+  url: Url;
+  response: Array<Response>;
+  request: Request;
+
+  errors: string;
+  status: number;
+}
+
+export interface Request {
+  id: string;
+}
+
+export interface Url {
+  domain: string;
+  path: string;
+  scheme: string;
 }
 
 export interface Response {
