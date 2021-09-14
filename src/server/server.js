@@ -16,25 +16,35 @@ new Sequelize('vue-test', 'root', '', {
     dialect: 'mysql'
 });
 
-const csrfProtection = csrf({ cookie: true })
-
 const limiter = new RateLimit({
     windowMs: 1*60*1000, // 10 minutes 
     max: 100, // limit each IP to 100 requests per windowMs 
     delayMs: 0 
 })
 
+const corsOptions = {
+    origin: "http://localhost:8080",
+    credentials: true,
+}
+
 const app = express()
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
+const csrfProtection = csrf({ cookie: true })
 // app.use(csrfProtection)
 app.use(helmet.hidePoweredBy());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
 app.use(helmet.xssFilter());
+
+// app.use(function (req, res, next) {
+//     console.log(req.csrfToken())
+//     res.cookie('csrf-token', req.csrfToken())
+//     next()
+// })
 
 app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     const token = req.csrfToken()
@@ -43,8 +53,7 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     return res.json(apiResponse(token, null, 200))
 });
 
-// csrfProtection
-app.post('/api/http/:method', async function (req, res) {  
+app.post('/api/http/:method', csrfProtection, async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
@@ -65,7 +74,7 @@ app.post('/api/http/:method', async function (req, res) {
                 server: '',
                 date: null,
                 statusCode: 302, 
-                http: 'HTTP ' + requestResponse.request.res.httpVersion // arguments[1].req.httpVersion,
+                http: 'HTTP ' + requestResponse.request.res.httpVersion 
             };
             responses.push(redirectResponse)
             saveResponse(reqId, 1, redirectResponse)
@@ -75,7 +84,7 @@ app.post('/api/http/:method', async function (req, res) {
             location: isRedirect ? new URL(requestResponse.request._redirectable._currentUrl).pathname : urlParts.pathname, 
             server: '',
             date: new Date(),                    
-            statusCode: requestResponse != null ? requestResponse.status : 400, //res.statusCode, 
+            statusCode: requestResponse != null ? requestResponse.status : 400,  
             http: 'HTTP '+ arguments[1].req.httpVersion,
         }
 
