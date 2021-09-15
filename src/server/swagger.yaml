@@ -1,0 +1,114 @@
+paths:
+  /api/getcsrftoken/:            
+    get:                 
+      summary: Use to request a csrf token
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/apiResponse'
+  
+  /api/http/{method}:
+    post:
+      summary: Make request and examine specified url
+    parameters:      
+      - in: body       
+        description: set url to examine
+        required: true
+        schema:          
+          $ref: '#/definitions/callRequest' 
+      - name: method
+        in: path
+        description: HTTP verb to perform action
+        required: true,
+        schema:
+          type: string
+          format: string
+    responses:
+      '200':
+        description: Successfully created user
+        content:
+            application/json:
+              schema:
+                $ref: '#/definitions/apiResponse'
+      '401': 
+        description: Missing CSRF token
+  
+  /api/{id}:
+    get:
+      suumary: Get previouly saved data
+    parameters:
+      - name: id
+        in: path
+        description: Id of shared content
+        required: true
+        schema:
+          type: string
+          format: string
+    responses:
+      '200':
+        description: Successful response
+        content: 
+          application/json:
+            schema:
+              $ref: '#/definitions/apiResponse'
+                
+      '404':
+        description: Data not found
+      '401':
+        description: Missing CSRF token
+
+
+definitions:  
+  apiResponse:
+    type: object
+    properties:
+      errors:
+        type: string
+        description: Error description
+      status:
+        type: integer
+        description: http status code
+      data:
+        type: object
+        description: Response data
+  callRequest:
+    type: object
+    properties:
+      url:
+        type: string
+        description: URL to examine
+  callResponse:
+    type: object
+    properties:
+      errors:
+        type: string
+        description: Error description
+      status:
+        type: integer
+        description: http status code
+      data:        
+        properties: 
+          url:
+            type: object
+            properties: 
+              domain:
+                type: string
+              scheme:
+                type: string
+              path:
+                type: string
+          request:
+            type: object
+            properties:
+              id: 
+                type: string
+                summary: Shared id
+          response:
+            type: object
+            properties:
+              

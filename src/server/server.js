@@ -1,4 +1,7 @@
 const express = require('express')
+// const bodyParser = require("body-parser");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const cors = require('cors')
 const csrf = require('csurf')
 const RateLimit = require('express-rate-limit')
@@ -11,7 +14,7 @@ const { Requests, Responses } = require('./models');
 const Q = require('q');
 const helmet = require("helmet");
 
-new Sequelize('vue-test', 'root', '', {
+var sequelize = new Sequelize('vue-test', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });
@@ -27,6 +30,26 @@ const corsOptions = {
     credentials: true,
 }
 
+const swaggerOptions = {
+    swaggerDefinition: {
+      info: {
+        version: "1.0.0",
+        title: "Server API",
+        description: "Server API Information",
+        contact: {
+            name: "Home Developer"
+        },
+        license: {
+            name: "MIT",
+            url: "https://spdx.org/licenses/MIT.html",
+        },
+        servers: ["http://localhost:5000"]
+      }
+    },
+    // ['.routes/*.js']
+    apis: ["./*.yaml"]
+};
+
 const app = express()
 app.use(cors(corsOptions))
 app.use(express.urlencoded({extended: true}))
@@ -38,18 +61,14 @@ const csrfProtection = csrf({ cookie: true })
 app.use(helmet.hidePoweredBy());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
-app.use(helmet.xssFilter());
+app.use(helmet.xssFilter())
 
-// app.use(function (req, res, next) {
-//     console.log(req.csrfToken())
-//     res.cookie('csrf-token', req.csrfToken())
-//     next()
-// })
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     const token = req.csrfToken()
     res.cookie('csrf-token', token)
-    // res.cookie('XSRF-TOKEN', token)
     return res.json(apiResponse(token, null, 200))
 });
 
@@ -105,22 +124,36 @@ app.post('/api/http/:method', csrfProtection, async function (req, res) {
     }    
 });
 
-// to see request-response details.
+
 app.get('/api/:id', csrfProtection, async (req, res) => {
     const id = req.params.id;
-    Q.all([
-        Requests.findByPk(id),
-        Responses.findAll({ where: { requestId: id } }),
-    ]).spread(function (requestObj, responsesObj) {
-        res.json(apiResponse({ 
-            url: getUrlInfo(requestObj.url), 
-            request: {},
-            response: responsesObj, 
-            // url: requestObj.url 
-        }, null, 200));
-    })
-    .done();    
+    try { 
+        Q.all([
+            Requests.findByPk(id),
+            Responses.findAll({ where: { requestId: id } }),
+        ]).spread(function (requestObj, responsesObj) {
+
+            if(requestObj == null) { 
+                res.json(apiResponse(null, 'Not found', 404), 404);
+            }
+            else { 
+                res.json(apiResponse({ 
+                    url: getUrlInfo(requestObj.url), 
+                    request: {
+                        id: requestObj.id
+                    },
+                    response: responsesObj, 
+                    // url: requestObj.url 
+                }, null, 200));
+            }
+        })
+        .done();    
+    }
+    catch (err) { 
+        res.json(apiResponse(null, 'An error ocurred while performing action. Err: '+err.message, 400));
+    }
 });
+
 
 app.use((error, req, res, next) => {    
     if(error.code != '') { 
