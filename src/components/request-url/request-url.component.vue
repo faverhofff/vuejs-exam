@@ -64,7 +64,7 @@ import { requestService } from '@/core/services/request.service'
 export default class RequestUrlComponent extends Vue {
   @Prop() public onRequestDone!: RequestResult;
 
-  public url: string | null = null;
+  public url: string | null = 'https://urufarma.com.uy/terfin/';
   protected currentMethod = 0;
   public availableMethods = AvailableMethodsArray;
 

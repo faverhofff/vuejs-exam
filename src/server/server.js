@@ -46,7 +46,6 @@ const swaggerOptions = {
         servers: ["http://localhost:5000"]
       }
     },
-    // ['.routes/*.js']
     apis: ["./*.yaml"]
 };
 
@@ -71,7 +70,7 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     res.cookie('csrf-token', token)
     return res.json(apiResponse(token, null, 200))
 });
-
+ 
 app.post('/api/http/:method', csrfProtection, async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
@@ -142,8 +141,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
                     request: {
                         id: requestObj.id
                     },
-                    response: responsesObj, 
-                    // url: requestObj.url 
+                    response: responsesObj.map( obj => obj.data),                     
                 }, null, 200));
             }
         })
@@ -153,7 +151,6 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
         res.json(apiResponse(null, 'An error ocurred while performing action. Err: '+err.message, 400));
     }
 });
-
 
 app.use((error, req, res, next) => {    
     if(error.code != '') { 

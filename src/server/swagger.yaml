@@ -27,7 +27,11 @@ paths:
         required: true,
         schema:
           type: string
-          format: string
+          enum: 
+            - GET
+            - POST
+            - PUT
+            - DELETE
     responses:
       '200':
         description: Successfully created user
@@ -35,7 +39,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/definitions/apiResponse'
-      '401': 
+      '403': 
         description: Missing CSRF token
   
   /api/{id}:
@@ -55,11 +59,13 @@ paths:
         content: 
           application/json:
             schema:
-              $ref: '#/definitions/apiResponse'
+              type: array
+              items:
+                $ref: '#/definitions/callResponse'
                 
       '404':
         description: Data not found
-      '401':
+      '403':
         description: Missing CSRF token
 
 
@@ -88,9 +94,11 @@ definitions:
       errors:
         type: string
         description: Error description
+        example: An error ocurred while perform action
       status:
         type: integer
         description: http status code
+        example: 200
       data:        
         properties: 
           url:
@@ -98,10 +106,13 @@ definitions:
             properties: 
               domain:
                 type: string
+                example: www.google.com
               scheme:
                 type: string
+                example: http
               path:
                 type: string
+                example: /
           request:
             type: object
             properties:
@@ -109,6 +120,24 @@ definitions:
                 type: string
                 summary: Shared id
           response:
-            type: object
-            properties:
-              
+            type: array
+            items:
+            oneOf:
+              - $ref: '#/definitions/Response'
+  Response:
+    type: object
+    properties:
+      location:
+        type: string
+        example: /
+      server:
+        type: string               
+      date:
+        type: date
+        example: 2021-09-15T10:32:09.157Z
+      statusCode:
+        type: integer
+        example: 200       
+      http:
+        type: string
+        example: HTTP 1.1         

@@ -1,8 +1,12 @@
 import { RequestResult } from '@/model/request-result.model';
-import axios, { AxiosRequestConfig, Method } from 'axios';
-import { ApiBaseUrl } from '../const/constants';
+import axiosInstance from "@/core/services/axios.service"
+import { ApiRoutes } from '@/router/api-routes';
 
 export default class RequestService {
+  
+  public readonly apiGetToken = '/getcsrftoken'
+  public readonly apiGetRequest = '/http'
+
   /**
    *
    * @param method
@@ -10,7 +14,7 @@ export default class RequestService {
    * @returns Promise<RequestResult>
    */
   public call(method: string, url: string): Promise<RequestResult> {
-    return axios.post(`${ApiBaseUrl}/http/${method}`, { url: url })
+    return axiosInstance.post(`${this.apiGetRequest}/${method}`, { url: url })
   }
 
   /**
@@ -18,9 +22,9 @@ export default class RequestService {
    * @returns 
    */
   public getToken(): Promise<any> {
-    return axios.get(`${ApiBaseUrl}/getcsrftoken`);
+    return axiosInstance.get(this.apiGetToken);
   }  
-
+  
 }
 
 export const requestService = new RequestService();
