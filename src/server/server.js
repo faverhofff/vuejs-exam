@@ -14,7 +14,7 @@ const { Requests, Responses } = require('./models');
 const Q = require('q');
 const helmet = require("helmet");
 
-var sequelize = new Sequelize('vue-test', 'root', '', {
+new Sequelize('vue-test', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });
