@@ -1,0 +1,18 @@
+.horizontal-scrollable > .row {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: inherit;
+}
+  
+.horizontal-scrollable > .row > .card {
+    display: inline-block;
+    float: none;
+}
+  
+.card {
+    font-size: 24px;
+    padding-bottom: 20px;
+    padding-top: 18px;
+    width: 500px;
+}
+  

@@ -19,6 +19,15 @@ export default class RequestService {
 
   /**
    * 
+   * @param queryId 
+   * @returns 
+   */
+  public getSharedQuery(queryId: string): Promise<any> {
+    return axiosInstance.get(`/${queryId}`);
+  }  
+
+  /**
+   * 
    * @returns 
    */
   public getToken(): Promise<any> {
