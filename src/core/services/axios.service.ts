@@ -1,5 +1,7 @@
 import axios from "axios";
-import { ApiBaseUrl } from "../const/api";
+import { ApiBaseUrl } from "./../const/api";
+
+// console.log(ApiBaseUrl);
 
 const instance = axios.create({
     baseURL: ApiBaseUrl,
