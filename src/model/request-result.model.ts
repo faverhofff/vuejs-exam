@@ -1,12 +1,13 @@
 export interface RequestResult {
-  data: {data: Header};
+  error: string;
+  data: Body;
+  stats: string;
 }
 
-export interface Header {
+export interface Body {
   url: Url;
   response: Array<Response>;
   request: Request;
-
   errors: string;
   status: number;
 }

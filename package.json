@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
+    "test:full": "testcafe chrome tests/open-home-page.ts & testcafe firefox tests/open-home-page.ts",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "store": "^2.0.12",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
+    "testcafe": "^1.16.0",
     "uuid": "^8.3.2",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
@@ -32,6 +34,7 @@
     "vue-router": "^4.0.11"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.4",
     "@typescript-eslint/eslint-plugin": "^4.18.0",

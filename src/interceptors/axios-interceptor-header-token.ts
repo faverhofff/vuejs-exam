@@ -1,6 +1,5 @@
 import axiosInstance from "@/core/services/axios.service"
 import { requestService } from "@/core/services/request.service";
-import { ApiRoutes } from "@/router/api-routes";
 
 export const refreshHeaderTokenInterceptor = () => {
   axiosInstance.interceptors.response.use(
@@ -19,7 +18,6 @@ export const refreshHeaderTokenInterceptor = () => {
           }
         }
       }
-
 
       return config;
     },
