@@ -1,10 +1,10 @@
 <template>
   <div v-if="this.info != null">
-    <div class="text-center text-uppercase font-weight-bold col-12">
+    <div class="text-center text-uppercase font-weight-bold col-12 mb-2">
       Share
     </div>
     <div class="text-center">
-      <div><a :href="sharedId" class="bg-info text-white rounded-pill">{{sharedId}}</a></div>
+      <div><a :href="sharedId" class="bg-info text-white rounded-pill px-3 py-2">{{sharedId}}</a></div>
     </div>
   </div>  
 </template>

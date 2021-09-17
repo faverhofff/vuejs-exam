@@ -2,6 +2,10 @@
     border: none;
 }
 
+#form > .card-body {
+    background-color: #f1f1f2;
+}
+
 .form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
     border: none;
     outline: none;
@@ -14,8 +18,14 @@
     }  
 }
 
+#dropdown-menu { border: none; background-color: #f9f9fa; }
+
 .cursor-pointer {
     cursor: pointer;
+}
+
+input, input:focus { 
+    background-color: transparent;
 }
 
 .bg-button {

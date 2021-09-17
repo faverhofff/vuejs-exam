@@ -41,30 +41,30 @@
     </div> -->
 
 <div class="scrolling-wrapper-flexbox">
-  <div class="card col-lg-6">
-    <div class="card mb-4 box-shadow url-info">
-          <ul class="list-unstyled mt-3 mb-4">
-            <li>
-              url info
-            </li>
-            <li>
-              <span>domain</span>
-              <span>{{ info?.data?.url?.domain }}</span>
-            </li>
-            <li>
-              <span>scheme</span>
-              <span>{{ info?.data?.url?.scheme }}</span>
-            </li>
-            <li>
-              <span>scheme</span> 
-              <span>{{ info?.data?.url?.path }}</span> 
-            </li>
-          </ul>
-        </div>
+  
+  <div class="card mb-4 p-0 col-12 col-sm-4 box-shadow url-info box">
+    <ul class="list-unstyled mb-4">
+      <li class="">
+        url info
+      </li>
+      <li>
+        <span>domain</span>
+        <span>{{ info?.data?.url?.domain }}</span>
+      </li>
+      <li>
+        <span>scheme</span>
+        <span>{{ info?.data?.url?.scheme }}</span>
+      </li>
+      <li>
+        <span>scheme</span> 
+        <span>{{ info?.data?.url?.path }}</span> 
+      </li>
+    </ul>
   </div>
-  <div class="card col-lg-6" v-for="(response, index) in info?.data?.response" :key="index" >
-    <div class="card mb-4 box-shadow response">
-          <ul class="list-unstyled mt-3 mb-4">
+  
+  <div class="card col-sm-4 p-0 col-12 box-shadow response" v-for="(response, index) in info?.data?.response" :key="index" >
+    
+          <ul class="list-unstyled mb-4">
             <li>response</li>
             <li>
               <section>{{ response.http }}</section> 
@@ -78,7 +78,7 @@
             </li>
           </ul>
         </div>
-  </div>
+  
 </div>
   
 </template>

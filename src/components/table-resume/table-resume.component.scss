@@ -17,7 +17,7 @@ div.response {
         }
 
         li {
-            height: 60px;
+            padding: 10px;
             padding-left: 10px;     
             background-color:rgb(233, 233, 233);
             border: 1px solid rgb(256, 256, 256);
@@ -62,4 +62,9 @@ div.response {
       flex: 0 0 auto;
       height: 400px;
     }
+  }
+
+
+  .box { 
+    margin: 0px 5px 0px 5px;
   }

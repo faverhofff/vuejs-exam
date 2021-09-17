@@ -2,7 +2,7 @@
   <div class="justify-content-center text-center col-lg-12">
     <div class="col-12">
       <form id="form" class="card card-sm bg-light">
-        <div class="card-body row no-gutters align-items-center">
+        <div class="card-body p-2 row no-gutters align-items-center">
           <!-- begin: Dropdown METHODS menu-->
           <div class="col-auto">
             <div class="dropdown-method show">
