@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-center pb-4">
-    
+
       <form id="form" class="card card-sm bg-light">
         <div class="card-body p-2 row no-gutters align-items-center">
           <!-- begin: Dropdown METHODS menu-->
@@ -33,10 +33,18 @@
 
           <div class="col">
             <input
+              v-if="!readonly"
               v-model="url"
               class="form-control form-control-lg form-control-borderless" 
               type="text"
               placeholder="example: https://example.com"
+              required
+            />
+            <input
+              v-if="readonly"
+              :value="getUrl"
+              class="form-control form-control-lg form-control-borderless" 
+              type="text"
               required
             />
           </div>
@@ -57,15 +65,14 @@
 
 <script lang="ts">
 import { RequestResult } from '@/core/model/request-result.model';
-import { Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { AvailableMethodsArray } from '@/core/const/methods'
 import { requestService } from '@/core/services/request.service'
 import { ValidateUrl } from '@/core/util/url.validation';
+import BaseComponent from '../base/base.component';
 
-export default class RequestUrlComponent extends Vue {
+export default class RequestUrlComponent extends BaseComponent {
   @Prop() public onRequestDone!: RequestResult;
-  @Prop() public query!: RequestResult;
   @Prop() public readOnly = false;
 
   public url: string = ''; 
@@ -96,6 +103,14 @@ export default class RequestUrlComponent extends Vue {
    */
   setMethod(method: number): void {
     this.currentMethod = method;
+  }
+
+  /**
+   * 
+   */
+  get getUrl(): string {
+    return this.info == undefined ? '' :
+           `${this.info?.data?.url?.scheme}://${this.info?.data?.url?.domain}/${this.info?.data?.url?.path}`;
   }
 
   /**
