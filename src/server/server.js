@@ -1,5 +1,4 @@
 const express = require('express')
-// const bodyParser = require("body-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const cors = require('cors')
@@ -26,7 +25,10 @@ const limiter = new RateLimit({
 })
 
 const corsOptions = {
-    origin: "http://localhost:8080",
+    origin: [
+        "http://localhost:8080", // Vue client  
+        "http://localhost"       // Mocha test
+    ],
     credentials: true,
 }
 
@@ -70,8 +72,8 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     res.cookie('csrf-token', token)
     return res.json(apiResponse(token, null, 200))
 });
- 
-app.post('/api/http/:method', csrfProtection, async function (req, res) {  
+ // csrfProtection
+app.post('/api/http/:method', async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
@@ -133,7 +135,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
         ]).spread(function (requestObj, responsesObj) {
 
             if(requestObj == null) { 
-                res.json(apiResponse(null, 'Not found', 404), 404);
+                res.status(200).json(apiResponse(null, 'Not found', 404))                
             }
             else { 
                 res.json(apiResponse({ 
@@ -181,7 +183,7 @@ var getUrlInfo = function(url) {
     const urlParts = new URL(url);
     return {
         domain: urlParts.hostname,
-        scheme: urlParts.protocol.substr(0,4),
+        scheme: urlParts.protocol.substr(0, urlParts.protocol.length-1),
         path: urlParts.pathname
     };
 }
