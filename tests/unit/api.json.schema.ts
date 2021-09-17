@@ -60,8 +60,7 @@ const BaseResponseScheme = {
         },
         status: {
             type: 'number'
-        }
-        // data: DataPayload
+        }        
     }
 };
 

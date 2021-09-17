@@ -3,16 +3,14 @@ import { requestService } from '@/core/services/request.service'
 import axiosInstance from "@/core/services/axios.service"
 import ChaiJsonSchema from 'chai-json-schema'
 import { OkResponse, BaseResponse } from './api.json.schema'
+import q from 'q'
 
 use(ChaiJsonSchema);
 
 describe('Test API endpoints', () => {
 
-    // run server ???
-    // before( () => {
-    //     // getting env variables
-    //     console.log(process.env)
-    // });
+    before( () => {  
+    });
 
     let requestId = '';
 
@@ -112,12 +110,17 @@ describe('Test API endpoints', () => {
             const response = callResult.data;
             expect(response).to.be.jsonSchema(BaseResponse);        
             console.log(response);
-            //assert.equal(response.status, 403, 'HTTP Status code is not 403')
-            //assert.equal(response.errors, 'Missing CSRF-TOKEN', 'There is not error in response')        
+            assert.equal(response.status, 403, 'HTTP Status code is not 403')
+            assert.equal(response.errors, 'Missing CSRF-TOKEN', 'There is not error in response')        
         })  
     })
 
-    it('Make 20 concurrent request to examine url', () => {
-        
+    it('Make 20 concurrent request to examine url', async () => {
+
+        const taskArray = Array.apply(0, Array(20)).map(function() { 
+            return requestService.getToken(); 
+        })
+
+        q.all(taskArray)
     })
 });

@@ -58,7 +58,7 @@ app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
 const csrfProtection = csrf({ cookie: true })
-// app.use(csrfProtection)
+app.use(csrfProtection)
 app.use(helmet.hidePoweredBy());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
@@ -72,8 +72,8 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     res.cookie('csrf-token', token)
     return res.json(apiResponse(token, null, 200))
 });
- // csrfProtection
-app.post('/api/http/:method', async function (req, res) {  
+
+app.post('/api/http/:method', csrfProtection, async function (req, res) {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
