@@ -64,6 +64,14 @@ app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
 app.use(helmet.xssFilter())
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, DUMB, INFO');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
