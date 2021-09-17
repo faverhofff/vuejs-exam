@@ -7,6 +7,7 @@
           <div class="col-auto">
             <div class="dropdown-method show">
               <button
+                :disabled="readOnly"
                 id="dropdown-menu"
                 class="btn btn-secondary dropdown-toggle bg-button text-white"
                 type="button"
@@ -16,7 +17,7 @@
               >
                 {{ getCurrentMethod }}
               </button>
-              <div class="dropdown-menu" aria-labelledby="dropdown-menu">
+              <div v-if="!readOnly" class="dropdown-menu" aria-labelledby="dropdown-menu">
                 <a
                   v-for="(method, index) in availableMethods"
                   :key="index"
@@ -51,11 +52,6 @@
           </div>
         </div>
       </form>
-      <!-- <div v-if="!isValidUrl() && url != '' && url != null" class="alert alert-danger">
-        <div v-if="url == ''">URL is required.</div>
-        <div v-if="url != '' && url != null && !isValidUrl()">Please enter valid url.</div>
-      </div> -->
-    
   </div>
 </template>
 
@@ -65,15 +61,20 @@ import { Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { AvailableMethodsArray } from '@/core/const/methods'
 import { requestService } from '@/core/services/request.service'
+import { ValidateUrl } from '@/core/util/url.validation';
+
 export default class RequestUrlComponent extends Vue {
   @Prop() public onRequestDone!: RequestResult;
   @Prop() public query!: RequestResult;
   @Prop() public readOnly = false;
 
-  public url: string | null = ''; //'https://urufarma.com.uy/terfin/';
+  public url: string = ''; 
   protected currentMethod = 0;
   public availableMethods = AvailableMethodsArray;
 
+  /**
+   * 
+   */
   getRequest(): void {
     requestService
       .call(this.getCurrentMethod, this.url as any)
@@ -81,16 +82,12 @@ export default class RequestUrlComponent extends Vue {
         this.$emit('onRequestDone', result.data);
       })
   }
-
+ 
+  /**
+   * 
+   */
   isValidUrl(): boolean {
-    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-        
-    return RegExp(pattern).test(this.url as any);
+    return ValidateUrl(this.url);
   }
 
   /**
@@ -111,5 +108,5 @@ export default class RequestUrlComponent extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import 'request-url.component.scss';
+  @import 'request-url.component.scss';
 </style>

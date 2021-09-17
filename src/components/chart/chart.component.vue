@@ -5,14 +5,20 @@
     </div>
     
     <div class="row d-flex justify-content-center">
-      <div class="col-lg-6 text-center page_load">
-        <img src="../../assets/chrono.png" alt="">
-        <h2>Page Load</h2>
+      <div class="col-lg-6 text-center ratio-label">
+        <div>
+          <h3>720</h3>
+          <h2>Great!</h2>
+        </div>
+        <h1>Page Load</h1>
       </div>
 
-      <div class="col-lg-6 text-center first_interaction">
-        <img src="../../assets/chrono.png" alt="">
-        <h2>First Interaction</h2>
+      <div class="col-lg-6 text-center ratio-label">
+        <div>
+          <h3>720</h3>
+          <h2>Great!</h2>
+        </div>
+        <h1>First Interaction</h1>
       </div>
     </div>
   </div>

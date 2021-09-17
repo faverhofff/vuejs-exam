@@ -1,17 +1,14 @@
 <template>
   <div class="container">
 
-    <div class="row">
-      <request-code-component :request-info="requestResult" class="d-none d-md-block" />
-      <request-url-component :query="requestResult" :read-only="true" />
-      <request-code-component :request-info="requestResult" class="d-block d-md-none" />
+    <div class="d-flex flex-column">
+      <request-code-component :request-info="requestResult" class="order-1 order-sm-0" />
+      <request-url-component :query="requestResult" :read-only="true" class="order-0 order-sm-1" />
     </div>      
 
     <div class="row"><hr></div>
     
-    <div class="scroll">
-      <table-resume-component :request-info="requestResult" />
-    </div>
+    <table-resume-component :request-info="requestResult" />  
 
     <div class="row"><hr></div>
 

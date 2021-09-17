@@ -40,7 +40,7 @@
       </div>
     </div> -->
 
-<div class="scrolling-wrapper-flexbox">
+<div v-if="info != null" class="scrolling-wrapper-flexbox">
   
   <div class="card p-0 col-12 col-sm-4 box-shadow url-info box">
     <ul class="list-unstyled mb-4">
@@ -87,10 +87,6 @@
 import BaseComponent from '../base/base.component';
 
 export default class TableResumeComponent extends BaseComponent {
-
-  mounted() {
-    console.log(this.info)
-  }
 
   getFormattedDate(date: string): string {
     return (new Date(date)).toDateString();
