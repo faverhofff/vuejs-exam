@@ -2,6 +2,10 @@
     border: none;
 }
 
+#form {
+    min-width: 50%;
+}
+
 #form > .card-body {
     background-color: #f1f1f2;
 }
@@ -25,7 +29,7 @@
 }
 
 input, input:focus { 
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .bg-button {

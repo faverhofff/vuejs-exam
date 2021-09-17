@@ -42,7 +42,7 @@
 
 <div class="scrolling-wrapper-flexbox">
   
-  <div class="card mb-4 p-0 col-12 col-sm-4 box-shadow url-info box">
+  <div class="card p-0 col-12 col-sm-4 box-shadow url-info box">
     <ul class="list-unstyled mb-4">
       <li class="">
         url info

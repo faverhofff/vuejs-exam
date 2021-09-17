@@ -4,7 +4,7 @@
       Share
     </div>
     <div class="text-center">
-      <div><a :href="sharedId" class="bg-info text-white rounded-pill px-3 py-2">{{sharedId}}</a></div>
+      <div><a :href="sharedId" id="share_btn" class="rounded-pill px-3 py-2">{{sharedId}}</a></div>
     </div>
   </div>  
 </template>
@@ -19,3 +19,7 @@ export default class ShareRequestComponent extends BaseComponent {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import 'share-request.component.scss';
+</style>

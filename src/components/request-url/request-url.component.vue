@@ -1,6 +1,6 @@
 <template>
-  <div class="justify-content-center text-center col-lg-12">
-    <div class="col-12">
+  <div class="d-flex justify-content-center pb-4">
+    
       <form id="form" class="card card-sm bg-light">
         <div class="card-body p-2 row no-gutters align-items-center">
           <!-- begin: Dropdown METHODS menu-->
@@ -30,10 +30,10 @@
           </div>
           <!-- end: Dropdown METHODS menu-->
 
-          <div class="col bg-light">
+          <div class="col">
             <input
               v-model="url"
-              class="form-control form-control-lg form-control-borderless bg-light" 
+              class="form-control form-control-lg form-control-borderless" 
               type="text"
               placeholder="example: https://example.com"
               required
@@ -51,11 +51,11 @@
           </div>
         </div>
       </form>
-      <div v-if="!isValidUrl() && url != '' && url != null" class="alert alert-danger">
+      <!-- <div v-if="!isValidUrl() && url != '' && url != null" class="alert alert-danger">
         <div v-if="url == ''">URL is required.</div>
         <div v-if="url != '' && url != null && !isValidUrl()">Please enter valid url.</div>
-      </div>
-    </div>
+      </div> -->
+    
   </div>
 </template>
 
