@@ -3,7 +3,7 @@
 
     <div class="d-flex flex-column">
       <request-code-component :request-info="requestResult" class="order-1 order-sm-0" />
-      <request-url-component :request-info="requestResult" :read-only="true" class="order-0 order-sm-1" />
+      <request-url-component :request-info="requestResult" :is-read-only="true" class="order-0 order-sm-1" />
     </div>      
 
     <div class="row"><hr></div>

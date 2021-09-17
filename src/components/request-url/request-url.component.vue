@@ -7,7 +7,7 @@
           <div class="col-auto">
             <div class="dropdown-method show">
               <button
-                :disabled="readOnly"
+                :disabled="isReadOnly"
                 id="dropdown-menu"
                 class="btn btn-secondary dropdown-toggle bg-button text-white"
                 type="button"
@@ -17,7 +17,7 @@
               >
                 {{ getCurrentMethod }}
               </button>
-              <div v-if="!readOnly" class="dropdown-menu" aria-labelledby="dropdown-menu">
+              <div v-if="!isReadOnly" class="dropdown-menu" aria-labelledby="dropdown-menu">
                 <a
                   v-for="(method, index) in availableMethods"
                   :key="index"
@@ -33,7 +33,7 @@
 
           <div class="col">
             <input
-              v-if="!readonly"
+              v-if="!isReadOnly"
               v-model="url"
               class="form-control form-control-lg form-control-borderless" 
               type="text"
@@ -41,7 +41,7 @@
               required
             />
             <input
-              v-if="readonly"
+              v-if="isReadOnly"
               :value="getUrl"
               class="form-control form-control-lg form-control-borderless" 
               type="text"
@@ -73,7 +73,7 @@ import BaseComponent from '../base/base.component';
 
 export default class RequestUrlComponent extends BaseComponent {
   @Prop() public onRequestDone!: RequestResult;
-  @Prop() public readOnly = false;
+  @Prop() public isReadOnly = false;
 
   public url: string = ''; 
   protected currentMethod = 0;
