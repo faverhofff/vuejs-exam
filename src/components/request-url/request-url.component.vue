@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { RequestResult } from '../../model/request-result.model';
+import { RequestResult } from '@/core/model/request-result.model';
 import { Vue } from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { AvailableMethodsArray } from '@/core/const/methods'

@@ -1,4 +1,4 @@
-import { RequestResult } from "@/model/request-result.model";
+import { RequestResult } from "@/core/model/request-result.model";
 import { Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 

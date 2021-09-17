@@ -64,14 +64,6 @@ app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.ieNoOpen())
 app.use(helmet.xssFilter())
 
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, DUMB, INFO');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
@@ -82,7 +74,7 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
 });
 
 app.post('/api/http/:method', csrfProtection, async function (req, res) {  
-    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'INFO', 'DUMB'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
         return res.json(apiResponse(null, 'Unknow http method', 400));

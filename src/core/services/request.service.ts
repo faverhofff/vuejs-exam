@@ -1,14 +1,17 @@
-import { RequestResult } from '@/model/request-result.model';
+import { RequestResult } from '@/core/model/request-result.model';
 import axiosInstance from "@/core/services/axios.service"
-import { ApiRoutes } from '@/router/api-routes';
+import { LocalUrl } from '../const/api';
+import { ChronosModel } from '../model/chronos.model';
 
 export default class RequestService {
   
   public readonly apiGetToken = '/getcsrftoken'
   public readonly apiGetRequest = '/http'
+  public readonly apiChronosInfo = LocalUrl + '/myjson.json'
 
   /**
-   *
+   * Call to node endpoint 
+   * and get website by specified method
    * @param method
    * @param url
    * @returns Promise<RequestResult>
@@ -18,7 +21,7 @@ export default class RequestService {
   }
 
   /**
-   * 
+   * Get stored website query
    * @param queryId 
    * @returns 
    */
@@ -28,6 +31,14 @@ export default class RequestService {
 
   /**
    * 
+   * @returns 
+   */
+  public getChronosInfo(): Promise<ChronosModel> {
+    return axiosInstance.get(`${this.apiChronosInfo}`);
+  }  
+
+  /**
+   * Refresh security token
    * @returns 
    */
   public getToken(): Promise<any> {

@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import { RequestResult } from '@/model/request-result.model';
+import { RequestResult } from '@/core/model/request-result.model';
 import RequestCodeComponent from '@/components/request-code/request-code.component.vue';
 import RequestUrlComponent from '@/components/request-url/request-url.component.vue';
 import TableResumeComponent from '@/components/table-resume/table-resume.component.vue';
