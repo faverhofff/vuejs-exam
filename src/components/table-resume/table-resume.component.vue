@@ -1,36 +1,86 @@
 <template>
-    <div v-if="info != null" class="container horizontal-scrollable">
+    <!-- <div v-if="info != null" class="container horizontal-scrollable">
       <div class="row text-center flex-row card-deck mb-3 text-center">
 
-        <div class="card mb-4 box-shadow">
+        <div class="card mb-4 box-shadow url-info">
           <ul class="list-unstyled mt-3 mb-4">
             <li>
-              <section>domain</section>
-              <section>{{ info?.data?.url?.domain }}</section>
+              url info
             </li>
             <li>
-              <section>scheme</section>
-              <section>{{ info?.data?.url?.scheme }}</section>
+              <span>domain</span>
+              <span>{{ info?.data?.url?.domain }}</span>
             </li>
             <li>
-              <section>scheme</section> 
-              <section>{{ info?.data?.url?.path }}</section> 
+              <span>scheme</span>
+              <span>{{ info?.data?.url?.scheme }}</span>
+            </li>
+            <li>
+              <span>scheme</span> 
+              <span>{{ info?.data?.url?.path }}</span> 
             </li>
           </ul>
         </div>
 
-        <div v-for="(response, index) in info?.data?.response" :key="index" class="card mb-4 box-shadow">
+        <div v-for="(response, index) in info?.data?.response" :key="index" class="card mb-4 box-shadow response">
           <ul class="list-unstyled mt-3 mb-4">
+            <li>response</li>
             <li>
               <section>{{ response.http }}</section> 
+            </li>
+            <li>
               <section>{{ response.location }}</section> 
-              <section v-if="response.server != null">{{ response.server }}</section> 
-              <section v-if="response.date != null">{{ getFormattedDate(response.date) }}</section> 
+            </li>
+            <li >
+              <section v-if="response.server != ''">{{ response.server }}</section> 
+              <section v-if="response.date != ''">{{ getFormattedDate(response.date) }}</section> 
             </li>
           </ul>
         </div>      
       </div>
-    </div>
+    </div> -->
+
+<div class="scrolling-wrapper-flexbox">
+  <div class="card col-lg-6">
+    <div class="card mb-4 box-shadow url-info">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>
+              url info
+            </li>
+            <li>
+              <span>domain</span>
+              <span>{{ info?.data?.url?.domain }}</span>
+            </li>
+            <li>
+              <span>scheme</span>
+              <span>{{ info?.data?.url?.scheme }}</span>
+            </li>
+            <li>
+              <span>scheme</span> 
+              <span>{{ info?.data?.url?.path }}</span> 
+            </li>
+          </ul>
+        </div>
+  </div>
+  <div class="card col-lg-6" v-for="(response, index) in info?.data?.response" :key="index" >
+    <div class="card mb-4 box-shadow response">
+          <ul class="list-unstyled mt-3 mb-4">
+            <li>response</li>
+            <li>
+              <section>{{ response.http }}</section> 
+            </li>
+            <li>
+              <section>{{ response.location }}</section> 
+            </li>
+            <li >
+              <section v-if="response.server != ''">{{ response.server }}</section> 
+              <section v-if="response.date != ''">{{ getFormattedDate(response.date) }}</section> 
+            </li>
+          </ul>
+        </div>
+  </div>
+</div>
+  
 </template>
 
 <script lang="ts">

@@ -8,7 +8,7 @@
             <div class="dropdown-method show">
               <button
                 id="dropdown-menu"
-                class="btn btn-secondary dropdown-toggle bg-dark text-white"
+                class="btn btn-secondary dropdown-toggle bg-button text-white"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -67,9 +67,10 @@ import { AvailableMethodsArray } from '@/core/const/methods'
 import { requestService } from '@/core/services/request.service'
 export default class RequestUrlComponent extends Vue {
   @Prop() public onRequestDone!: RequestResult;
+  @Prop() public query!: RequestResult;
   @Prop() public readOnly = false;
 
-  public url: string | null = 'https://urufarma.com.uy/terfin/';
+  public url: string | null = ''; //'https://urufarma.com.uy/terfin/';
   protected currentMethod = 0;
   public availableMethods = AvailableMethodsArray;
 

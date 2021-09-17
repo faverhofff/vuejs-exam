@@ -1,18 +1,65 @@
-.horizontal-scrollable > .row {
-    overflow-x: auto;
-    white-space: nowrap;
-    display: inherit;
+div.url-info,
+div.response {
+    background-color:rgb(256, 256, 256);    
+    ul {
+        font-size: 10px;
+        background-color:rgb(233, 233, 233);
+
+        li:first-child {
+            height: 15px;
+            text-align: left;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            padding-top: 10px;
+            padding-bottom: 25px;
+            padding-left: 10px;
+            background-color:rgb(256, 256, 256);
+        }
+
+        li {
+            height: 60px;
+            padding-left: 10px;     
+            background-color:rgb(233, 233, 233);
+            border: 1px solid rgb(256, 256, 256);
+            text-align: left;
+
+            span:first-child {
+                display: block;
+                text-align: left;
+                text-transform: uppercase;
+                font-size: 13px;
+                font-weight: bold;
+            }
+            span:nth-child(n+2):nth-child(-n+3) {
+                display: block;
+                text-align: left;
+                font-size: 13px;
+            }
+        }
+    }
 }
-  
-.horizontal-scrollable > .row > .card {
+
+
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  .card {
     display: inline-block;
-    float: none;
+    width: 150px;
+  }
 }
+
+.scrolling-wrapper-flexbox {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
   
-.card {
-    font-size: 24px;
-    padding-bottom: 20px;
-    padding-top: 18px;
-    width: 500px;
-}
-  
+    .card {
+      border: 1px solid dark-light !important;
+      flex: 0 0 auto;
+      height: 400px;
+    }
+  }

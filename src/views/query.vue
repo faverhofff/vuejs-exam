@@ -2,11 +2,13 @@
   <div class="container">
 
     <div class="row">
-      <request-code-component :request-info="requestResult" />
+      <request-code-component :request-info="requestResult" class="d-none d-md-block" />
       <request-url-component :query="requestResult" :read-only="true" />
-      <request-code-component :request-info="requestResult" />
+      <request-code-component :request-info="requestResult" class="d-block d-md-none" />
     </div>      
 
+    <div class="row"><hr></div>
+    
     <div class="scroll">
       <table-resume-component :request-info="requestResult" />
     </div>
@@ -18,7 +20,7 @@
     </div>
 
     <div class="row"><hr></div>
-    
+
     <div class="col-lg-12">
       <chart-component :request-info="requestResult" />
     </div>
