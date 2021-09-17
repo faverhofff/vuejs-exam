@@ -43,6 +43,7 @@
             <input
               v-if="isReadOnly"
               :value="getUrl"
+              readonly
               class="form-control form-control-lg form-control-borderless" 
               type="text"
               required
