@@ -11,6 +11,7 @@
           <h2>Great!</h2>
         </div>
         <h1>Page Load</h1>
+        <h1>0.4s</h1>
       </div>
 
       <div class="col-lg-6 text-center ratio-label">
@@ -19,6 +20,7 @@
           <h2>Great!</h2>
         </div>
         <h1>First Interaction</h1>
+        <h1>0.9s</h1>
       </div>
     </div>
   </div>
