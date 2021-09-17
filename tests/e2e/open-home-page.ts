@@ -54,9 +54,9 @@ test('request query https://www.google.com', async t => {
     await t
         .click('a.bg-info.text-white.rounded-pill');
 
-    const h3_1 = findElementByTrimmedText('div.timing_analysis > h2', 'Timing Analysis');
-    const h3_2 = findElementByTrimmedText('div.page_load > h2', 'Page Load');
-    const h3_3 = findElementByTrimmedText('div.first_interaction > h2', 'First Interaction');
+    const h3_1 = findElementByTrimmedText('div.timing_analysis > h3', 'Timing Analysis');
+    const h3_2 = findElementByTrimmedText('div.page_load > h3', 'Page Load');
+    const h3_3 = findElementByTrimmedText('div.first_interaction > h3', 'First Interaction');
 
     await t.expect(h3_1).ok()
     await t.expect(h3_2).ok()
