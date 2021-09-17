@@ -27,7 +27,8 @@ const limiter = new RateLimit({
 const corsOptions = {
     origin: [
         "http://localhost:8080", // Vue client  
-        "http://localhost"       // Mocha test
+        "http://localhost",      // Mocha test
+        "http://164.90.191.29"   // deploy server
     ],
     credentials: true,
 }
