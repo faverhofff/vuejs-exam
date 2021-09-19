@@ -68,7 +68,7 @@ app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     return res.json(apiResponse(token, null, 200))
 });
 
-app.post('/api/http/:method', csrfProtection, async function (req, res) {  
+app.post('/api/http/:method', csrfProtection, async (req, res) => {  
     const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'INFO', 'DUMB'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
@@ -76,7 +76,7 @@ app.post('/api/http/:method', csrfProtection, async function (req, res) {
 
     const urlParts = new URL(req.body.url);
         
-    try { 
+    //try { 
         const requestResponse = await axios[method.toLowerCase()](req.body.url).catch( error => console.log(error));
             
         const isRedirect = requestResponse!=null && requestResponse.request != null && requestResponse.request._redirectable._isRedirect;      
@@ -113,10 +113,10 @@ app.post('/api/http/:method', csrfProtection, async function (req, res) {
             },
             response: responses
         }, null, 200));
-    }
-    catch(err) {
-        res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
-    }    
+    // }
+    // catch(err) {        
+    //     res.json(apiResponse(null, 'An error ocurred while perfom action. Contact with administrators', 400));
+    // }    
 });
 
 
@@ -149,6 +149,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
 });
 
 app.use((error, req, res, next) => {    
+    console.log(error)
     if(error.code != '') { 
         if (error.code === 'EBADCSRFTOKEN') {
             return res.json(apiResponse(null, 'Missing CSRF-TOKEN', 403));
