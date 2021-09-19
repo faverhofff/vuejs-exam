@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex justify-content-center pb-4">
 
-      <form id="form" class="card card-sm bg-light">
+      <form id="form" v-on:submit.prevent=""
+        :class="[!isValidUrl() && url.length > 0 ? 'is-invalid-url' : '', 'card card-sm bg-light']">
         <div class="card-body p-2 row no-gutters align-items-center">
           <!-- begin: Dropdown METHODS menu-->
           <div class="col-auto">
@@ -35,14 +36,16 @@
             <input
               v-if="!isReadOnly"
               v-model="url"
+              v-on:keyup="onKeySubmit"
               class="form-control form-control-lg form-control-borderless" 
               type="text"
               placeholder="example: https://example.com"
               required
             />
             <input
-              v-if="isReadOnly"
               :value="getUrl"
+              v-if="isReadOnly"
+              v-on:keyup="onKeySubmit"
               readonly
               class="form-control form-control-lg form-control-borderless" 
               type="text"
@@ -104,6 +107,15 @@ export default class RequestUrlComponent extends BaseComponent {
    */
   setMethod(method: number): void {
     this.currentMethod = method;
+  }
+
+  /**
+   * 
+   */
+  onKeySubmit(e: any): void {
+    if (this.isValidUrl() && e.keyCode === 13) {
+      this.getRequest();
+    }
   }
 
   /**
