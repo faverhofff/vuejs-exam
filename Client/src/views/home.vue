@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column py-2">
       <request-code-component :request-info="requestResult" class="order-1 order-sm-0" />
       <request-url-component v-on:on-request-done="emitRequestInfo" class="order-0 order-sm-1" />
     </div>      
@@ -9,7 +9,7 @@
     <table-resume-component :request-info="requestResult" />
 
     <div class="flex-row justify-content-center">
-        <share-request-component :request-info="requestResult" />
+      <share-request-component :request-info="requestResult" />
     </div>
 
   </div>

@@ -1,6 +1,6 @@
 <template>
   <!-- begin: Code result header-->
-  <div class="w-100 request-code-result px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <div class="w-100 request-code-result px-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 v-if="info != undefined" class="display-4">{{ info?.data?.response[0].statusCode }}</h1>
     <p v-if="info != undefined" class="lead">{{ MessagebyStatusCode[info?.data?.response[0].statusCode] }}</p>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="row d-flex justify-content-center text-center">
     <div class="col-12">
-    <h2>Timing Analysis</h2>
+      <h2>Timing Analysis</h2>
     </div>
     
     <div class="row d-flex justify-content-center">

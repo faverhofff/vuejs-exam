@@ -6,21 +6,17 @@
       <request-url-component :request-info="requestResult" :is-read-only="true" class="order-0 order-sm-1" />
     </div>      
 
-    <div class="row"><hr></div>
-    
     <table-resume-component :request-info="requestResult" />  
-
-    <div class="row"><hr></div>
 
     <div class="flex-row justify-content-center">
       <share-request-component :request-info="requestResult" />
     </div>
 
-    <div class="row"><hr></div>
-
-    <div class="col-lg-12">
-      <chart-component :request-info="requestResult" />
+    <div class="col-lg-12 d-sm-none1 d-md-none1 d-lg-none1 d-xl-none1">
+      
     </div>
+
+    <chart-component :request-info="requestResult" class="d-none" />
 
   </div>
 </template>
