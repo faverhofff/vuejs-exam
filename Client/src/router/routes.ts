@@ -7,6 +7,6 @@ export default [
   {
     path: '/:query_id',
     name: 'Query',
-    component: () => import(`@/views/query.vue`),
+    component: () => import(`@/views/home.vue`),
   }  
 ];

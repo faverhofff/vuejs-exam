@@ -5,9 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "test:unit": "vue-cli-service test:unit",
-    "test:e2e": "vue-cli-service test:e2e",
-    "test:full": "testcafe chrome tests/e2e/open-home-page.ts & testcafe firefox tests/e2e/open-home-page.ts",
+    "test:all": "testcafe chrome tests/e2e/desktop-tests.js & testcafe \"chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true\" tests/e2e/mobile-tests.js device=mobile",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

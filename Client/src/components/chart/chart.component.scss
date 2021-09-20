@@ -1,26 +1,37 @@
-.ratio-label {
-    div {
-        width: 280px;
-        height: 240px;
-        background-image: url(../../assets/chrono.png);
+$baseFontSize: 16;
+$green: #1abc9c;
+$yellow: #f1c40f;
+$red: #c0392b;
+$blue: #3498db;
+$grey: #f2f2f2;
 
-        h3 {
-            padding-top: 95px;
-        }
-    }
-
-    h1
-    {
-        font-size: 2.3rem;
-        font-weight: bold;
-    
-
-        &:first-child {
-            color: rgb(204, 204, 204) !important;
-        }
-
-        &:nth-child(2n)  {
-            color: rgb(94, 94, 94) !important;
-        }
+.chart-content {
+    h1, h2, h3, h4 {
+        color: white;
     }
 }
+
+.box {
+    --p:160deg;
+    --b:20px;
+    
+    width:250px;
+    display:inline-block;
+    border-radius:500px 500px 0 0;
+    background: linear-gradient(to right, green , yellow , red);
+    -webkit-mask:
+       radial-gradient(farthest-side at bottom,transparent calc(100% - 20px - 1px),#fff calc(100% - var(--b))),
+       linear-gradient(120deg,#fff 50%,transparent 0) top/100% 200%;
+    -webkit-mask-composite:destination-in;
+            mask-composite:intersect;
+  }
+  
+  .box::before {
+    content:"";
+    display:block;
+    padding-top:50%;
+  }
+
+  .box-info {
+      margin-top: -80px;
+  }
