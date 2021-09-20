@@ -4,7 +4,11 @@
       <h2>Timing Analysis</h2>
     </div>
     
-    <div class="row d-flex justify-content-center">
+    <div v-if="measure == undefined" class="row d-flex justify-content-center">
+        <h4>There'n site requested</h4>
+    </div>  
+
+    <div v-if="measure != undefined" class="row d-flex justify-content-center">
       <div class="col-lg-6 text-center ratio-label">
         <div>
           <h3>{{ measure?.pageLoadScore }}</h3>

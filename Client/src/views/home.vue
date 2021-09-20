@@ -1,6 +1,6 @@
 <template>  
 
-  <nav-component>
+  <nav-component class="d-sm-none d-md-none d-lg-none d-xl-none">
     <template v-slot:body>
       <chart-component :request-info="requestResult"  />
     </template>
