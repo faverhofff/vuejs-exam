@@ -1,3 +1,9 @@
+.chart-content {
+    h1, h2, h3 {
+        color: white;
+    }
+}
+
 .ratio-label {
     div {
         width: 280px;
@@ -13,14 +19,5 @@
     {
         font-size: 2.3rem;
         font-weight: bold;
-    
-
-        &:first-child {
-            color: rgb(204, 204, 204) !important;
-        }
-
-        &:nth-child(2n)  {
-            color: rgb(94, 94, 94) !important;
-        }
     }
 }
