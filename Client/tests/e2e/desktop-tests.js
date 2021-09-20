@@ -42,7 +42,7 @@ test('request https://www.google.com', async t => {
         .typeText('input.form-control', 'https://www.google.com')
         .click('button.btn.btn-lg.btn-primary.cursor-pointer');
 
-    const queryLink = getElement('a.bg-info.text-white.rounded-pill');
+    const queryLink = getElement('a.rounded-pill');
     await t.expect(queryLink).notEql(null);
 });
 
@@ -52,13 +52,11 @@ test('request query https://www.google.com', async t => {
         .click('button.btn.btn-lg.btn-primary.cursor-pointer');
 
     await t
-        .click('a.bg-info.text-white.rounded-pill');
+        .click('a.rounded-pill');
 
-    const h3_1 = findElementByTrimmedText('div.timing_analysis > h3', 'Timing Analysis');
-    const h3_2 = findElementByTrimmedText('div.page_load > h3', 'Page Load');
-    const h3_3 = findElementByTrimmedText('div.first_interaction > h3', 'First Interaction');
+    const element_1 = findElementByTrimmedText('h1.display-4', '200');
+    const element_2 = getElement('ul.list-unstyled');
 
-    await t.expect(h3_1).ok()
-    await t.expect(h3_2).ok()
-    await t.expect(h3_3).ok()
+    await t.expect(element_1).ok()
+    await t.expect(element_2).ok()
 });

@@ -9,7 +9,7 @@
     </div>  
 
     <div v-if="measure != undefined" class="row d-flex justify-content-center">
-      <div class="col-lg-6 text-center ratio-label">
+      <div class="col-lg-6 text-center ratio-label page-load">
         <div>
           <h3>{{ measure?.pageLoadScore }}</h3>
           <h2>{{ message }}</h2>
@@ -18,7 +18,7 @@
         <h1>{{ measure?.pageLoadTime }}s</h1>
       </div>
 
-      <div class="col-lg-6 text-center ratio-label">
+      <div class="col-lg-6 text-center ratio-label first-interaction">
         <div>
           <h3>{{ measure?.firstInteractionScore }}</h3>
           <h2>{{ message }}</h2>
