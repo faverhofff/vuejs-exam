@@ -23,7 +23,8 @@ const limiter = new RateLimit({
 })
 
 const corsOptions = {
-    origin: config.cors,
+    origin: '*', //config.cors,
+    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH','OPTIONS'],
     credentials: true,
 }
 
@@ -48,41 +49,45 @@ const swaggerOptions = {
 
 const app = express()
 app.use(cors(corsOptions))
+app.use(helmet.hidePoweredBy());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.ieNoOpen())
+app.use(helmet.xssFilter())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(limiter)
 app.use(cookieParser())
 const csrfProtection = csrf({ cookie: true })
 app.use(csrfProtection)
-app.use(helmet.hidePoweredBy());
-app.use(helmet.permittedCrossDomainPolicies());
-app.use(helmet.ieNoOpen())
-app.use(helmet.xssFilter())
+
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     const token = req.csrfToken()
-    res.cookie('csrf-token', token)
+    res.cookie('csrf-token', token)    
     return res.json(apiResponse(token, null, 200))
 });
 
-app.post('/api/http/:method', csrfProtection, async (req, res) => {  
-    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'INFO', 'DUMB'];
+
+app.post('/api/http/:method/', csrfProtection, async (req, res) => {  
+    const url = req.body.url
+    const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     const method = req.params.method;
     if(allowedMethods.indexOf(method.toUpperCase())<0)
         return res.json(apiResponse(null, 'Unknow http method', 400));
 
-    const urlParts = new URL(req.body.url);
-        
+    const urlParts = new URL(url);
+    
     //try { 
-        const requestResponse = await axios[method.toLowerCase()](req.body.url).catch( error => console.log(error));
+        const requestResponse = await axios[method.toLowerCase()](url).catch( 
+            error => console.log(''));
             
         const isRedirect = requestResponse!=null && requestResponse.request != null && requestResponse.request._redirectable._isRedirect;      
         let responses = [];
 
-        const reqId = saveRequest(req.body.url);
+        const reqId = saveRequest(url);
         if(isRedirect) { 
             const redirectResponse = {
                 location: urlParts.pathname, 
@@ -94,20 +99,24 @@ app.post('/api/http/:method', csrfProtection, async (req, res) => {
             responses.push(redirectResponse)
             saveResponse(reqId, 1, redirectResponse)
         }
-        
+
+       
+
         let finalResponse = {
             location: isRedirect ? new URL(requestResponse.request._redirectable._currentUrl).pathname : urlParts.pathname, 
             server: '',
             date: new Date(),                    
             statusCode: requestResponse != null ? requestResponse.status : 400,  
-            http: 'HTTP '+ arguments[1].req.httpVersion,
+            http: requestResponse == null ? '' : 'HTTP '+ requestResponse.request.res.httpVersion  // arguments[1].req.httpVersion,
         }
+
+        
 
         saveResponse(reqId, (isRedirect ? 2 : 1), finalResponse)
         responses.push(finalResponse)
 
         res.json(apiResponse({ 
-            url: getUrlInfo(req.body.url), 
+            url: getUrlInfo(url), 
             request: {
                 id: reqId
             },
@@ -148,8 +157,9 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
     }
 });
 
-app.use((error, req, res, next) => {    
-    console.log(error)
+app.use((error, req, res, next) => {          
+    res.locals._csrf = req.csrfToken();
+   
     if(error.code != '') { 
         if (error.code === 'EBADCSRFTOKEN') {
             return res.json(apiResponse(null, 'Missing CSRF-TOKEN', 403));
@@ -157,7 +167,8 @@ app.use((error, req, res, next) => {
             return res.json(apiResponse(null, 'An general error ocurred, contact with administrators', 500));
         }
     }
-    return next(error);
+    
+    return next();
 });
 
 var saveRequest = function (req) {
@@ -185,3 +196,4 @@ var getUrlInfo = function(url) {
 
 // Run the server.
 app.listen(config.host.port, () => console.log(`Server running in ${config.host.port}`));
+module.exports = app;

@@ -38,15 +38,15 @@ const DataPayload = {
 const OkResponseScheme = {
     title: 'successfull response schema v1',
     type: 'object',
-    required:['errors', 'status', 'data'],
+    // required:['errors', 'status', 'data'],
+    required:['errors', 'status'],
     properties: { 
         errors: {
             type: 'string'
         },
         status: {
             type: 'number'
-        },
-        data: DataPayload
+        }
     }
 };
 
