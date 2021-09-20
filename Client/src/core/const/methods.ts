@@ -2,9 +2,7 @@ export enum AvailableMethods {
   GET = 1,
   POST,
   PUT,
-  DELETE,
-  INFO,
-  DUMB,
+  DELETE
 }
 
 export const AvailableMethodsArray = Object.values(AvailableMethods).filter(

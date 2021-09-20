@@ -11,30 +11,27 @@ $grey: #f2f2f2;
     }
 }
 
-
 .box {
+    --p:160deg;
+    --b:20px;
+    
     width:250px;
+    display:inline-block;
     border-radius:500px 500px 0 0;
-    background:
-       /* a linear gradient to control the progress. Adjust the angle from 0deg to 180deg*/
-       linear-gradient(160deg,transparent 50%,#fff 0) top/100% 200%,
-       /* a radial gradient to show only a part of the gradient (20px here)*/
-       radial-gradient(farthest-side at bottom,#fff calc(100% - 20px),transparent 0),
-       /* the main gradient */
-       linear-gradient(to right, green , yellow , red);
+    background: linear-gradient(to right, green , yellow , red);
+    -webkit-mask:
+       radial-gradient(farthest-side at bottom,transparent calc(100% - 20px - 1px),#fff calc(100% - var(--b))),
+       linear-gradient(120deg,#fff 50%,transparent 0) top/100% 200%;
+    -webkit-mask-composite:destination-in;
+            mask-composite:intersect;
+  }
+  
+  .box::before {
+    content:"";
+    display:block;
+    padding-top:50%;
   }
 
-  div.box-info {
+  .box-info {
       margin-top: -80px;
-      div h3, div h2 {
-          color:black;
-      }
   }
-
-  div.box {
-    &::before {
-        content:"";
-        display:block;
-        padding-top:50%;
-    }
-}    
