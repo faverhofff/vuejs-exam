@@ -13,8 +13,15 @@
     </div>
 
     <div class="col-lg-12 d-sm-none1 d-md-none1 d-lg-none1 d-xl-none1">
-      
+      <button>View chart</button>      
     </div>
+
+    <modal-component>      
+      <template v-slot:modal-body>
+      <h1>Hola mundo</h1>  
+      </template>      
+    </modal-component>
+
 
     <chart-component :request-info="requestResult" class="d-none" />
 
@@ -30,6 +37,7 @@ import TableResumeComponent from '@/components/table-resume/table-resume.compone
 import ChartComponent from '@/components/chart/chart.component.vue';
 import ShareRequestComponent from '@/components/share-request/share-request.component.vue';
 import { requestService } from '@/core/services/request.service';
+import ModalComponent from '../components/modal/modal.component.vue';
 
 @Options({
   name: 'Query',
@@ -38,7 +46,8 @@ import { requestService } from '@/core/services/request.service';
     RequestUrlComponent,
     TableResumeComponent,
     ChartComponent,
-    ShareRequestComponent
+    ShareRequestComponent,
+    ModalComponent
   },
 })
 export default class App extends Vue {
