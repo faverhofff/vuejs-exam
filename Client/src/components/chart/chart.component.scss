@@ -1,23 +1,40 @@
+$baseFontSize: 16;
+$green: #1abc9c;
+$yellow: #f1c40f;
+$red: #c0392b;
+$blue: #3498db;
+$grey: #f2f2f2;
+
 .chart-content {
     h1, h2, h3, h4 {
         color: white;
     }
 }
 
-.ratio-label {
-    div {
-        width: 280px;
-        height: 240px;
-        background-image: url(../../assets/chrono.png);
 
-        h3 {
-            padding-top: 95px;
-        }
-    }
+.box {
+    width:250px;
+    border-radius:500px 500px 0 0;
+    background:
+       /* a linear gradient to control the progress. Adjust the angle from 0deg to 180deg*/
+       linear-gradient(160deg,transparent 50%,#fff 0) top/100% 200%,
+       /* a radial gradient to show only a part of the gradient (20px here)*/
+       radial-gradient(farthest-side at bottom,#fff calc(100% - 20px),transparent 0),
+       /* the main gradient */
+       linear-gradient(to right, green , yellow , red);
+  }
 
-    h1
-    {
-        font-size: 2.3rem;
-        font-weight: bold;
+  div.box-info {
+      margin-top: -80px;
+      div h3, div h2 {
+          color:black;
+      }
+  }
+
+  div.box {
+    &::before {
+        content:"";
+        display:block;
+        padding-top:50%;
     }
-}
+}    
