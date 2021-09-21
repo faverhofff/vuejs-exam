@@ -10,13 +10,13 @@ app.use(csrfProtection);
 
 
 
-app.get('/api/getcsrftoken', function (req, res) {
+app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     return res.json({ csrfToken: req.csrfToken() });
 });
 
 app.use((error, req, res, next) => {          
     res.locals._csrf = req.csrfToken();
-    console.log(error.code)
+    //console.log(error.code)
     
     if(error.code != '') { 
         if (error.code === 'EBADCSRFTOKEN') {
@@ -32,15 +32,15 @@ app.use((error, req, res, next) => {
 });
 
 // Secure POST request by validate CSRF token
-app.post('/api/formhandler', function (req, res) {
+app.post('/api/formhandler', csrfProtection, function (req, res) {
     res.json({ a: '99999'})
 })
 
-// app.use((error, req, res, next) => {  
-//     console.log(error.code)        
-//     // res.locals._csrf = req.csrfToken();
-//     next()
-// })
+app.use((error, req, res, next) => {  
+    console.log(error.code)        
+    // res.locals._csrf = req.csrfToken();
+    next()
+})
 
 app.listen(5001, () => console.log(`Server running in 5001`));
 module.exports = app;
