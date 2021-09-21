@@ -13,7 +13,7 @@ npm install
 
 ### Configure
 
-Change .env files values (.env.development, .env.production)
+Change .env files values, into Client folder (.env.development, .env.production)
 
 |VARIABLE        |DESCRIPTION                    |
 |----------------|-------------------------------|
@@ -50,10 +50,16 @@ npm serve
 npm build
 ```
 
-### Run tests
+### Run tests for backend
 ```
-npm testcafe -g 
+cd Client/src/Server
+npm run test
+```
 
+### Run tests for frontend
+```
+cd Client
+npm install testcafe -g 
 npm run test:all
 
 note: you must have "Chrome" installed
