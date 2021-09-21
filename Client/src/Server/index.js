@@ -147,7 +147,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
                     request: {
                         id: requestObj.id
                     },
-                    response: responsesObj.map( obj => obj.data ),                     
+                    response: responsesObj.map( obj => (typeof obj.data === 'string') ? JSON.parse(obj.data) : obj.data ),                     
                 }, null, 200));
             }
         })
