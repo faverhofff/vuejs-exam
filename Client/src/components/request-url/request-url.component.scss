@@ -1,0 +1,43 @@
+.is-invalid-url {
+    border: 1px solid red;
+}
+
+.form-control-borderless {
+    border: none;
+}
+
+#form {
+    min-width: 50%;
+}
+
+#form > .card-body {
+    background-color: #f1f1f2;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.dropdown-method:hover {
+    .dropdown-menu, .dropdown-menu:hover {
+        display: block;
+    }  
+}
+
+#dropdown-menu { border: none; background-color: #f9f9fa; }
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+input, input:focus { 
+    background-color: transparent !important;
+}
+
+.bg-button {
+    background-color: rgb(250, 250, 250) !important;
+    color: rgb(155, 155, 155) !important;
+    font-weight: bold;
+}
