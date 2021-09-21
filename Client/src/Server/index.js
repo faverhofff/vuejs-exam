@@ -23,7 +23,7 @@ const limiter = new RateLimit({
 })
 
 const corsOptions = {
-    origin: '*', //config.cors,
+    origin: config.cors,
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH','OPTIONS'],
     credentials: true,
 }
@@ -66,7 +66,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/api/getcsrftoken', csrfProtection, function (req, res) {
     const token = req.csrfToken()
-    res.cookie('csrf-token', token)    
+    // res.cookie('csrf-token', token)    
     return res.json(apiResponse(token, null, 200))
 });
 
@@ -158,8 +158,7 @@ app.get('/api/:id', csrfProtection, async (req, res) => {
 });
 
 app.use((error, req, res, next) => {          
-    res.locals._csrf = req.csrfToken();
-   
+    res.locals._csrf = req.csrfToken();    
     if(error.code != '') { 
         if (error.code === 'EBADCSRFTOKEN') {
             return res.json(apiResponse(null, 'Missing CSRF-TOKEN', 403));

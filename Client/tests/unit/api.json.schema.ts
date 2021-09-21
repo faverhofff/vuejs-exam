@@ -38,15 +38,15 @@ const DataPayload = {
 const OkResponseScheme = {
     title: 'successfull response schema v1',
     type: 'object',
-    // required:['errors', 'status', 'data'],
-    required:['errors', 'status'],
+    required:['errors', 'status', 'data'],
     properties: { 
         errors: {
             type: 'string'
         },
         status: {
             type: 'number'
-        }
+        },
+        data: DataPayload
     }
 };
 
@@ -64,7 +64,6 @@ const BaseResponseScheme = {
     }
 };
 
-module.exports = { 
-    OkResponseScheme, 
-    BaseResponseScheme 
-}
+export const 
+    OkResponse = OkResponseScheme,
+    BaseResponse = BaseResponseScheme
