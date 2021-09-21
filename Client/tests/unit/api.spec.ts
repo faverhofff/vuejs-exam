@@ -3,7 +3,6 @@ import { requestService } from '@/core/services/request.service'
 import axiosInstance from "@/core/services/axios.service"
 import ChaiJsonSchema from 'chai-json-schema'
 import { OkResponse, BaseResponse } from './api.json.schema'
-import q from 'q'
 
 use(ChaiJsonSchema);
 
@@ -102,12 +101,17 @@ describe('Test API endpoints', () => {
             })     
         })
     })
-
     
     it('Make 20 concurrent request to examine url', async () => {
         const taskArray = Array.apply(0, Array(20)).map(function() { 
             return requestService.getToken(); 
         })
-        q.all(taskArray)
+
+        try {
+            const allPromise = Promise.all(taskArray)
+            const values = await allPromise
+        } catch (err) {
+            assert.equal(err.response.data.status, 429) 
+        }      
     })
 });

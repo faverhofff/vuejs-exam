@@ -19,7 +19,8 @@ new Sequelize(config.bd.name, config.bd.user, config.bd.password, config.bd);
 const limiter = new RateLimit({
     windowMs: config.limiter.time,
     max: config.limiter.maxRequests,
-    delayMs: 0 
+    delayMs: 0,
+    message: apiResponse(null, 'Too many requests, please try again later.', 429)
 })
 
 const corsOptions = {

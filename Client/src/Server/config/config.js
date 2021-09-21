@@ -1,7 +1,7 @@
 const env = process.env.NODE_ENV || 'development';
 require('dotenv').config({ path: `.env.${env}` })
 
-const url = new URL(process.env.URL)
+const url = new URL(process.env.VUE_APP_API_URL)
 
 const config = { 
     bd: {
