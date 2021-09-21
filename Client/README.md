@@ -8,6 +8,15 @@ npm install
 ### Run tests
 ```
 npm testcafe -g 
+
+cd server 
+
+node index.js
+
+cd client
+
+npm run server
+
 npm run test:all
 
 note: you must have "Chrome" installed
