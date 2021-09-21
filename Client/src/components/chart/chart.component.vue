@@ -10,10 +10,10 @@
         <h4>There'n site requested</h4>
     </div>  
 
-    <div class="row d-flex justify-content-center">
+    <div v-if="measure != undefined" class="row d-flex justify-content-center">
       
       <div class="box" :style="getUpdatedGauge(measure?.pageLoadScore)" ></div>
-      <div v-if="measure != undefined" class="justify-content-center box-info">
+      <div class="justify-content-center box-info">
         <div>
           <h3>{{ measure?.pageLoadScore }}</h3>
           <h2>{{ message }}</h2>
